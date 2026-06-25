@@ -54,6 +54,11 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
+        // SANITIZER: Removes all non-ASCII characters that cause ISO-8859-1 errors
+        function sanitizeKey(key) {
+            return key.replace(/[^\x00-\x7F]/g, "").trim();
+        }
+
         async function extractText(file) {
             const buffer = await file.arrayBuffer();
             const ext = file.name.split('.').pop().toLowerCase();
@@ -71,7 +76,8 @@
         }
 
         document.getElementById('scan-btn').onclick = async () => {
-            const key = document.getElementById('api-key').value || localStorage.getItem('ats_key');
+            const rawKey = document.getElementById('api-key').value || localStorage.getItem('ats_key');
+            const key = sanitizeKey(rawKey);
             const jd = document.getElementById('jd').value;
             const fileInput = document.getElementById('resume-file');
             const output = document.getElementById('output');
