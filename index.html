@@ -3,231 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATS DeepScan — Ronak Vyas</title>
+    <title>ATS DeepScan | Ronak Vyas</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 20px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-        
-        /* Apple-like fluid markdown layout styling */
-        .markdown-body h2 { font-size: 1.1rem; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.75rem; color: #ffffff; letter-spacing: -0.01em; display: flex; align-items: center; gap: 0.5rem; }
-        .markdown-body ul { list-style-type: none; padding-left: 0; margin-bottom: 1.25rem; }
-        .markdown-body li { position: relative; padding-left: 1.25rem; margin-bottom: 0.5rem; color: #94a3b8; line-height: 1.6; }
-        .markdown-body li::before { content: "•"; position: absolute; left: 0; color: #6366f1; font-weight: bold; }
-        .markdown-body strong { color: #f1f5f9; font-weight: 600; }
-        .markdown-body blockquote { border-left: 3px solid #4f46e5; padding-left: 1rem; margin: 1.25rem 0; color: #cbd5e1; font-style: italic; background: rgba(79, 70, 229, 0.05); padding-top: 0.5rem; padding-bottom: 0.5rem; border-radius: 0 8px 8px 0; }
+        body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #e2e8f0; }
+        .glass { background: rgba(15, 20, 36, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        .prose-invert { color: #94a3b8; }
+        .prose-invert h2 { color: #ffffff; font-weight: 600; margin-top: 1.5rem; }
     </style>
 </head>
-<body class="bg-[#0b0f19] text-[#e2e8f0] min-h-screen flex flex-col antialiased selection:bg-indigo-500/30">
+<body class="min-h-screen p-4 md:p-8">
 
-    <!-- Navbar -->
-    <header class="border-b border-slate-900 bg-[#0f1424]/60 backdrop-blur-xl sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                </div>
-                <div>
-                    <h1 class="text-sm font-semibold tracking-tight text-white">ATS DeepScan</h1>
-                    <p class="text-[10px] text-slate-500 font-medium tracking-wider uppercase">Intelligence Layer</p>
-                </div>
-            </div>
-            <!-- Subtle Signature Branding -->
-            <div class="flex items-center gap-2 text-xs font-medium tracking-wide text-slate-400 bg-slate-900/60 px-3 py-1.5 rounded-full border border-slate-800/60">
-                <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
-                <span>Designed by <span class="text-slate-200 font-semibold">Ronak Vyas</span></span>
-            </div>
+    <header class="max-w-5xl mx-auto mb-8 flex justify-between items-center">
+        <div>
+            <h1 class="text-xl font-semibold text-white">ATS DeepScan</h1>
+            <p class="text-xs text-indigo-400 uppercase tracking-widest font-bold">Ronak Vyas Engineering</p>
         </div>
+        <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-500"></div>
     </header>
 
-    <!-- Main Dynamic Interface -->
-    <main class="flex-grow max-w-7xl mx-auto w-full px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-        
-        <!-- Left Processing Panel -->
-        <section class="lg:col-span-5 flex flex-col gap-6">
-            <div class="bg-[#0f1424] border border-slate-800/80 rounded-2xl p-6 shadow-xl flex flex-col flex-grow">
-                <div class="flex justify-between items-center mb-6">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                        <h2 class="text-sm font-medium text-slate-200">Analysis Parameters</h2>
-                    </div>
-                    <!-- Core Engine Pill Dropdown -->
-                    <div class="text-[11px] bg-slate-950 px-2.5 py-1 rounded-md text-slate-400 border border-slate-800 flex items-center gap-1.5">
-                        <span class="w-1 h-1 rounded-full bg-emerald-400"></span>
-                        <span>Llama-3-8B (Free Engine)</span>
-                    </div>
-                </div>
-
-                <!-- Job Description Input -->
-                <div class="mb-5 flex flex-col flex-grow">
-                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2" for="jd">Target Job Specification</label>
-                    <textarea id="jd" placeholder="Paste requirements, stack, or copy of entire role definition..." class="w-full bg-[#070a12] border border-slate-800/80 rounded-xl p-4 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 placeholder-slate-600 transition-all resize-none min-h-[140px] flex-grow focus:bg-[#090d18]"></textarea>
-                </div>
-
-                <!-- Resume Input -->
-                <div class="mb-6 flex flex-col flex-grow">
-                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2" for="resume">Candidate Narrative / Profile Markdown</label>
-                    <textarea id="resume" placeholder="Paste standard text extraction from candidate profile, portfolio text, or resume..." class="w-full bg-[#070a12] border border-slate-800/80 rounded-xl p-4 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 placeholder-slate-600 transition-all resize-none min-h-[140px] flex-grow focus:bg-[#090d18]"></textarea>
-                </div>
-
-                <!-- Primary Call To Action -->
-                <button id="scan-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium py-3.5 rounded-xl shadow-lg shadow-indigo-600/10 hover:shadow-indigo-600/20 transition-all flex items-center justify-center gap-2 border border-indigo-500/30 group active:scale-[0.99]">
-                    <svg class="w-4 h-4 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    Evaluate Alignment Profile
-                </button>
-            </div>
-        </section>
-
-        <!-- Right Output Diagnostic Terminal -->
-        <section class="lg:col-span-7 flex flex-col">
-            <div class="bg-[#0f1424] border border-slate-800/80 rounded-2xl p-6 shadow-xl flex flex-col flex-grow relative overflow-hidden min-h-[450px]">
-                <div class="flex justify-between items-center border-b border-slate-800/60 pb-4 mb-4">
-                    <h2 class="text-sm font-medium text-slate-200 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        Diagnostic Analysis Breakdown
-                    </h2>
-                    <span class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-700 block"></span>
-                </div>
-                
-                <!-- Loading Shimmer State -->
-                <div id="loading" class="hidden absolute inset-0 bg-[#0f1424]/90 backdrop-blur-sm flex flex-col items-center justify-center z-10 animate-fade-in">
-                    <div class="w-8 h-8 border-2 border-slate-700 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
-                    <p class="text-xs text-indigo-400 font-medium tracking-wide">Processing through alignment filters...</p>
-                </div>
-
-                <!-- Structured Dynamic Container -->
-                <div id="output" class="markdown-body overflow-y-auto flex-grow pr-1 text-slate-300">
-                    <div class="h-full flex flex-col items-center justify-center text-slate-500 text-center py-12 px-6">
-                        <svg class="w-10 h-10 text-slate-700 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                        <p class="text-xs max-w-xs leading-relaxed">Provide both targeting metrics to execute comparative analysis engine.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Global App Footer -->
-    <footer class="border-t border-slate-900/60 bg-[#070a12] py-4">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-[11px] text-slate-500">
+    <main class="max-w-5xl mx-auto">
+        <div class="glass rounded-3xl p-8 border border-white/5 shadow-2xl space-y-6">
             <div>
-                © 2026 Engine Architecture. All rights reserved.
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">OpenRouter API Key</label>
+                <input type="password" id="api-key" placeholder="Paste your sk-or-v1 key here..." class="w-full bg-black/40 border border-white/5 rounded-xl p-4 text-sm text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
             </div>
-            <div class="font-medium tracking-wide">
-                Engineered by <span class="text-slate-400 hover:text-indigo-400 transition-colors">Ronak Vyas Labs</span>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <textarea id="jd" placeholder="Paste the Job Description here..." class="w-full h-64 bg-black/40 border border-white/5 rounded-2xl p-6 text-sm text-slate-300 focus:border-indigo-500/50 outline-none resize-none"></textarea>
+                
+                <div class="flex flex-col gap-4">
+                    <label class="flex-grow border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-white/5 transition-all">
+                        <span class="text-indigo-400 font-medium">Upload Resume (PDF/DOCX)</span>
+                        <input type="file" id="resume-file" class="hidden">
+                    </label>
+                    <button id="scan-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-4 rounded-2xl transition-all shadow-lg shadow-indigo-900/20">Analyze Alignment</button>
+                </div>
             </div>
         </div>
-    </footer>
+
+        <div id="output" class="mt-12 glass rounded-3xl p-8 border border-white/5 min-h-[200px] prose prose-invert max-w-none">
+            <p class="text-center text-slate-500 italic">Analysis results will appear here after processing...</p>
+        </div>
+    </main>
 
     <script>
-        // System Engine Instructions
-        const SYSTEM_PROMPT = `You are an elite, enterprise-grade Applicant Tracking System (ATS) algorithm and a Senior Technical Recruiter. Your task is to perform a rigorous semantic, keyword, and structural analysis of a candidate's Resume/Profile against a specific Job Description (JD). Evaluate the candidate strictly on what is explicitly written or proven through context.
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
-### OUTPUT FORMAT
-You must output your response in highly crisp, professional language using Markdown. Structure your response exactly like this:
-
-## 📊 Overall ATS Match Score: [XX]%
-- **Hard Skills:** [XX/40]
-- **Experience:** [XX/30]
-- **Soft Skills:** [XX/15]
-- **Education:** [XX/15]
-
-## 🔍 Keyword & Gap Analysis
-- 🟢 **Top Matched Strengths:** [List 3 critical skills]
-- 🔴 **Critical Missing Skills:** [List 3 JD requirements entirely absent]
-- 🟡 **Underrepresented Skills:** [List skills mentioned but lacking depth]
-
-## ⚡ Actionable Enhancements
-- **Profile Polish:** [1-2 sentence rewrite of their summary]
-- **Bullet Point Transformations:** [Select 2 weak bullet points and rewrite them using the STAR method]
-- **Strategic Advice:** [1-2 structural fixes]
-
-## 🎯 Final Verdict
-[Shortlist As-Is / Apply After Edits / Do Not Apply]`;
-
-        // Smart API Token Resolution (Baked configuration with fallbacks)
-        const BACKUP_KEY = "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";
-        
-        function resolveApiKey() {
-            // Priority 1: Check url search parameter string (?key=sk-...)
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('key')) return urlParams.get('key');
-            
-            // Priority 2: Safe local storage retention
-            if (localStorage.getItem('ats_engine_key')) return localStorage.getItem('ats_engine_key');
-            
-            // Priority 3: Built-in default string instance 
-            return BACKUP_KEY;
+        async function extractText(file) {
+            const buffer = await file.arrayBuffer();
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (ext === 'docx') return (await mammoth.extractRawText({ arrayBuffer: buffer })).value;
+            if (ext === 'pdf') {
+                const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+                let text = '';
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    text += (await page.getTextContent()).items.map(item => item.str).join(' ');
+                }
+                return text;
+            }
+            return new TextDecoder().decode(buffer);
         }
 
-        // Process Scan Execution Logic
-        document.getElementById('scan-btn').addEventListener('click', async () => {
-            const jd = document.getElementById('jd').value.trim();
-            const resume = document.getElementById('resume').value.trim();
-            const outputDiv = document.getElementById('output');
-            const loadingScreen = document.getElementById('loading');
-            const targetToken = resolveApiKey();
+        document.getElementById('scan-btn').onclick = async () => {
+            const key = document.getElementById('api-key').value || localStorage.getItem('ats_key');
+            const jd = document.getElementById('jd').value;
+            const fileInput = document.getElementById('resume-file');
+            const output = document.getElementById('output');
 
-            if (!jd || !resume) {
-                alert('Input arrays cannot be empty. Please populate both parameters.');
-                return;
-            }
-
-            loadingScreen.classList.remove('hidden');
+            if (!key || !jd || fileInput.files.length === 0) return alert("Please provide Key, JD, and a Resume file.");
+            
+            localStorage.setItem('ats_key', key);
+            output.innerHTML = "Processing deep analysis...";
 
             try {
-                const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                const resumeText = await extractText(fileInput.files[0]);
+                const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                     method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${targetToken}`,
-                        "HTTP-Referer": window.location.origin,
-                        "X-Title": "ATS Engine Platform — RV Labs",
-                        "Content-Type": "application/json"
+                    headers: { 
+                        "Authorization": `Bearer ${key}`, 
+                        "Content-Type": "application/json", 
+                        "HTTP-Referer": window.location.origin, 
+                        "X-Title": "ATS DeepScan" 
                     },
                     body: JSON.stringify({
-                        model: "meta-llama/llama-3-8b-instruct:free",
-                        temperature: 0.15, // Highly deterministic calculation
+                        model: "meta-llama/llama-3.3-70b-instruct:free",
                         messages: [
-                            { role: "system", content: SYSTEM_PROMPT },
-                            { role: "user", content: `Job Description:\n${jd}\n\nCandidate Profile:\n${resume}` }
+                            { role: "system", content: "You are an expert ATS recruiter. Analyze the JD and Resume provided. Compare Hard Skills, Experience, and Soft Skills. Output in structured Markdown." },
+                            { role: "user", content: `JD: ${jd}\n\nResume: ${resumeText}` }
                         ]
                     })
                 });
-
-                if (!response.ok) {
-                    const structuralErr = await response.json();
-                    throw new Error(structuralErr.error?.message || 'Gateway interface rejected parsing sequence.');
-                }
-
-                const responseData = await response.json();
-                const processedMarkdown = responseData.choices[0].message.content;
                 
-                // Parse engine markdown matrix directly to layout viewport
-                outputDiv.innerHTML = marked.parse(processedMarkdown);
-
-                // Preserve access key cleanly in local space if provided through alternative methods
-                if(window.location.search.includes('key=')) {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    localStorage.setItem('ats_engine_key', urlParams.get('key'));
-                }
-
-            } catch (runtimeError) {
-                outputDiv.innerHTML = `
-                    <div class="p-4 border border-red-500/20 bg-red-500/5 text-red-400 text-xs rounded-xl flex flex-col gap-1.5">
-                        <span class="font-bold uppercase tracking-wider text-[10px]">Processing Pipeline Halted</span>
-                        <span>${runtimeError.message}</span>
-                        <span class="text-slate-500 mt-2 text-[10px]">Note: If this error mentions authentication/keys, GitHub's automated secret scanner likely revoked the baked-in key for safety. You can pass a fresh key in the URL like this: your-site.github.io/?key=YOUR_KEY</span>
-                    </div>`;
-            } finally {
-                loadingScreen.classList.add('hidden');
+                const data = await res.json();
+                if (data.error) throw new Error(data.error.message);
+                
+                output.innerHTML = marked.parse(data.choices[0].message.content);
+            } catch (err) {
+                output.innerHTML = `<p class="text-red-400">Error: ${err.message}</p>`;
             }
-        });
+        };
     </script>
 </body>
 </html>
